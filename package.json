@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "testhh": "npm hardhat test --no-compile --network opal",
+    "runhh": "yarn hardhat run --no-compile --network opal",
+    "compile": "npx hardhat compile",
+    "airdrop": "npx hardhat ignition deploy ignition/modules/Airdrop.ts --network opal"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "4.0.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "hardhat": "^2.22.2",
+    "typechain": "^8.3.2"
+  },
+  "dependencies": {
+    "@polkadot/util-crypto": "^12.6.2",
+    "@unique-nft/solidity-interfaces": "^0.70.0",
+    "dotenv": "^16.4.5"
+  }
+}
