@@ -10,6 +10,7 @@ type DropConfig = {
     contractValue: string,
     dropAccountsAtOnce: number,
     blocksBetweenDrop: number,
+    dropsBeforeStop: number,
     rpc: string
   },
   contract: `0x${string}`,
@@ -21,11 +22,14 @@ const SUBSTRATE_DONE_FILE = `${__dirname}/data/substrate-dropped.txt`;
 const ETHEREUM_TODO_FILE = `${__dirname}/data/ethereum.txt`;
 const ETHEREUM_DONE_FILE = `${__dirname}/data/ethereum-dropped.txt`;
 
+let dropTxsToday = 0;
 
 const main = async () => {
   const dropConfig = await readConfig();
   const substrateAccounts = (await fs.readFile(SUBSTRATE_TODO_FILE)).toString().split('\n');
   const ethereumAccounts = (await fs.readFile(ETHEREUM_TODO_FILE)).toString().split('\n');
+  const subSet = new Set(substrateAccounts);
+  const ethSet = new Set(ethereumAccounts);
   const provider = new ethers.JsonRpcProvider(dropConfig.settings.rpc);
   const wallet = ethers.Wallet.fromPhrase(config.airdropMnemonic).connect(provider);
 
@@ -77,32 +81,42 @@ async function deployContract(dropConfig: DropConfig, substrate: string[], ether
     const address = await contract.getAddress();
     await fs.writeFile(CONFIG_FILE, JSON.stringify({...dropConfig, ...{contract: address}}));
 
+    console.log('🚀 Contract deployed:', address);
     return contract;
   }
 }
 
 async function dropForceSub(airdrop: Airdrop, substrate: string[], progress: DropConfig) {
   while (substrate.length > 0) {
+    if (dropTxsToday >= progress.settings.dropsBeforeStop) return;
+    console.log('🎯 Dropping...');
+    console.log('Accounts left:', substrate.length);
     let accountsToDrop = substrate.splice(0, progress.settings.dropAccountsAtOnce).filter(a => a !== "");
+
     let publicKeys = accountsToDrop.map(getPublicKeyFromAddress);
 
-    const dropTx = await airdrop.forceDropSub(publicKeys);
+    const dropTx = await airdrop.forceDropSub(publicKeys, {gasLimit: 5_000_000});
     await dropTx.wait();
 
     await fs.writeFile(SUBSTRATE_TODO_FILE, substrate.join('\n') + '\n');
     await fs.appendFile(SUBSTRATE_DONE_FILE, accountsToDrop.join('\n') + '\n');
+    dropTxsToday += 1;
   }
 }
 
 async function dropForceEth(airdrop: Airdrop, ethereum: string[], progress: DropConfig) {
   while (ethereum.length > 0) {
+    if (dropTxsToday >= progress.settings.dropsBeforeStop) return;
+    console.log('🎯 Dropping...');
+    console.log('Accounts left:', ethereum.length);
     let accountsToDrop = ethereum.splice(0, progress.settings.dropAccountsAtOnce).filter(a => a !== "");
 
-    const dropTx = await airdrop.forceDropEth(accountsToDrop);
+    const dropTx = await airdrop.forceDropEth(accountsToDrop, {gasLimit: 5_000_000});
     await dropTx.wait();
 
     await fs.writeFile(ETHEREUM_TODO_FILE, ethereum.join('\n') + '\n');
     await fs.appendFile(ETHEREUM_DONE_FILE, accountsToDrop.join('\n') + '\n');
+    dropTxsToday += 1;
   }
 }
 

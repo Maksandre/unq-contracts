@@ -2,8 +2,8 @@
   "scripts": {
     "testhh": "npm hardhat test --no-compile --network opal",
     "runhh": "yarn hardhat run --no-compile --network opal",
-    "compile": "npx hardhat compile",
-    "airdrop": "npx hardhat ignition deploy ignition/modules/Airdrop.ts --network opal"
+    "airdrop": "yarn hardhat run ./scripts/airdrop/main.ts --network opal",
+    "compile": "npx hardhat compile"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "4.0.0",

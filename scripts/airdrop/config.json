@@ -1,1 +1,11 @@
-{"settings":{"drop":"0.1","contractValue":"5","dropAccountsAtOnce":8,"blocksBetweenDrop":0,"rpc":"https://rpc-opal.unique.network"},"contract":"0xD0ea3273cd8bBfDDFd9432b814f2FdDf993d3633"}
+{
+  "settings": {
+    "drop": "5",
+    "contractValue": "55500",
+    "dropAccountsAtOnce": 60,
+    "blocksBetweenDrop": 0,
+    "rpc": "https://rpc.unique.network",
+    "dropsBeforeStop": 3
+  },
+  "contract": "0xC245A3F2C598eBc06c7FD1D51C1D97D65E01c96D"
+}
