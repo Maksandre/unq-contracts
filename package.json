@@ -2,7 +2,7 @@
   "scripts": {
     "testhh": "npm hardhat test --no-compile --network opal",
     "runhh": "yarn hardhat run --no-compile --network opal",
-    "airdrop": "yarn hardhat run ./scripts/airdrop/main.ts --network opal",
+    "airdrop": "yarn hardhat run ./scripts/airdrop/main.ts --network unique",
     "compile": "npx hardhat compile"
   },
   "devDependencies": {

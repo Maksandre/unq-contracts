@@ -12,6 +12,10 @@ const config: HardhatUserConfig = {
       url: "https://rpc-opal.unique.network/",
       accounts: [appConfig.mainAccountSeed]
     },
+    unique: {
+      url: "https://rpc.unique.network/",
+      accounts: [appConfig.mainAccountSeed]
+    },
   },
 
 };

@@ -2,10 +2,10 @@
   "settings": {
     "drop": "5",
     "contractValue": "55500",
-    "dropAccountsAtOnce": 60,
+    "dropAccountsAtOnce": 1,
     "blocksBetweenDrop": 0,
     "rpc": "https://rpc.unique.network",
-    "dropsBeforeStop": 3
+    "dropsBeforeStop": 180
   },
   "contract": "0xC245A3F2C598eBc06c7FD1D51C1D97D65E01c96D"
 }
